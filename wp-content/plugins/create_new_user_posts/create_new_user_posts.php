@@ -17,7 +17,7 @@
  * Plugin URI:        http://ciosgrowthhub.com
  * Description:       Creates Business Directory post on registration.
  * Version:           1.0.0
- * Author:            DNADevs
+ * Author:            DNA Devs
  * Author URI:        http:cios.website
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
@@ -81,9 +81,9 @@ run_create_new_user_posts();
 function create_new_user_posts($user_id){
         if (!$user_id>0)
                 return;
-        //here we know the user has been created so to create
-        //3 posts we call wp_insert_post 3 times.
+        //here we know the user has been created.
         // Create post object
+
         $my_business_post = array(
              'post_title' => 'business',
              'post_content' => 'This is my post.',
