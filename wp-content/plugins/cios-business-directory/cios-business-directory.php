@@ -13,11 +13,11 @@
  * @package           Cios_Business_Directory
  *
  * @wordpress-plugin
- * Plugin Name:       Cios Business Directories
+ * Plugin Name:       CIoS Business Directories
  * Plugin URI:        http://ciosgrowthhub.com
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       Adds the Business Dirctory as a CPT. Easier to develop with.
  * Version:           1.0.0
- * Author:            DNADevs
+ * Author:            DNA Devs
  * Author URI:        http:cios.website
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
@@ -97,30 +97,22 @@ function my_custom_post_business() {
     'menu_position' => 5,
     'supports'      => array( 'title', 'editor', 'thumbnail', 'excerpt', 'comments' ),
     'has_archive'   => true,
+		'taxonomies'		=> array( 'post_tag', 'category' ),
   );
   register_post_type( 'business', $args );
 }
 add_action( 'init', 'my_custom_post_business' );
 
 
-function my_taxonomies_business() {
-  $labels = array(
-    'name'              => _x( 'Business Categories', 'taxonomy general name' ),
-    'singular_name'     => _x( 'Business Category', 'taxonomy singular name' ),
-    'search_items'      => __( 'Search Business Categories' ),
-    'all_items'         => __( 'All Business Categories' ),
-    'parent_item'       => __( 'Parent Business Category' ),
-    'parent_item_colon' => __( 'Parent Business Category:' ),
-    'edit_item'         => __( 'Edit Business Category' ),
-    'update_item'       => __( 'Update Business Category' ),
-    'add_new_item'      => __( 'Add New Business Category' ),
-    'new_item_name'     => __( 'New Business Category' ),
-    'menu_name'         => __( 'Business Categories' ),
-  );
-  $args = array(
-    'labels' => $labels,
-    'hierarchical' => true,
-  );
-  register_taxonomy( 'business_category', 'business', $args );
+add_filter('pre_get_posts', 'query_post_type');
+function query_post_type($query) {
+  if(is_category() || is_tag()) {
+    $post_type = get_query_var('post_type');
+	if($post_type)
+	    $post_type = $post_type;
+	else
+	    $post_type = array('post','business');
+    $query->set('post_type',$post_type);
+	return $query;
+    }
 }
-add_action( 'init', 'my_taxonomies_business', 0 );
