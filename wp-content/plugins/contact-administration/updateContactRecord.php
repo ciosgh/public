@@ -3,8 +3,8 @@
  * Template Name: Update Contact Record
  *
  * @package WordPress
- * @subpackage Twenty_Thirteen
- * @since Twenty Thirteen 1.0
+ * @subpackage CIoS-Dev
+ * @since CIoS-Dev 1.0
  */
 require('../../../wp-blog-header.php');
 get_header(); 
@@ -41,32 +41,42 @@ if (!$current_user->ID) {
 
 			<?php
 
-                       // pull in our data - need to secure this up for production
+                        // pull in our data - need to secure this up for production
+                        $form_fields = array(
+                            'contactid',
+                            'first_name',
+                            'last_name',
+                            'email', 
+                            'phone',
+                            'mobile',
+                        );
 
-$contactID    = $_POST['CONTACTID'];
-$accountID    = $_POST['ACCOUNTID'];
-$firstname    = $_POST['First_Name'];
-$lastname     = stripslashes($_POST['Last_Name']);
-$accountname  = $_POST['Account_Name'];
-$email        = $_POST['Email'];
-$county       = $_POST['County/Location'];
+                        // Entify each field value to go some way to prevent oddities and hacks
+                         foreach ($form_fields as $this_field_name) {
+                                $this_field_value = trim($_POST[$this_field_name]);
+                                        if ($this_field_value) {
+                                                $GLOBALS[$this_field_name] = htmlentities(str_replace('\\','',$this_field_value),ENT_QUOTES,'UTF-8');
+                                        } else {
+                                                $GLOBALS[$this_field_name] = NULL;
+                                        }
+                                }
 
-$upUrl = 'https://crm.zoho.com/crm/private/xml/Contacts/updateRecords';
-$upParam = '?newFormat=1&authtoken='.$token.'&scope=crmapi&id='.$contactID.'&xmlData=<Contacts><row no="1"><FL val="First Name">'.$firstname.'</FL><FL val="Last Name">'.$lastname.'</FL><FL val="Email">'.$email.'</FL><FL val="County/Location">'.$county.'</FL></row></Contacts>';
+                        $upUrl = 'https://crm.zoho.com/crm/private/xml/Contacts/updateRecords';
+                        $upParam = '?newFormat=1&authtoken='.$token.'&scope=crmapi&id='.$contactid.'&xmlData=<Contacts><row no="1"><FL val="First Name">'.$first_name.'</FL><FL val="Last Name">'.$last_name.'</FL><FL val="Email">'.$email.'</FL><FL val="Phone">'.$phone.'</FL><FL val="Mobile">'.$mobile.'</FL></row></Contacts>';
 
-$result = processRequest($upUrl, $upParam);
+                        $result = processRequest($upUrl, $upParam);
 
-/* check and implement wp-users record change if they've amended their details */
+                        /* check and implement wp-users record change if they've amended their details */
 
-if ($tmp['email'] <> $email) {
-    global $wpdb;
-    $wpdb->update( $wpdb->users, array( 'user_email' => $email, 'user_nicename' => $firstname ), array( 'crm_contact' => $tmp['crmcontact'] ), array( '%s' ), array( '%d' ) );
-}
+                        if ($tmp['email'] <> $email) {
+                            global $wpdb;
+                            $wpdb->update( $wpdb->users, array( 'user_email' => $email, 'user_nicename' => $firstname ), array( 'crm_contact' => $tmp['crmcontact'] ), array( '%s' ), array( '%d' ) );
+                        }
 
 
-//implement code to check for success code 200 to ensure update has occurred or post up error message if otherwise.
-header('Location: profile.php');
-?>
+                        //implement code to check for success code 200 to ensure update has occurred or post up error message if otherwise.
+                        header('Location: profile.php');
+                        ?>
 
 		</div><!-- #content -->
 	</div><!-- #primary -->

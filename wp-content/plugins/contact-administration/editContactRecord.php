@@ -3,8 +3,8 @@
  * Template Name: Edit Contact Record
  *
  * @package WordPress
- * @subpackage Twenty_Thirteen
- * @since Twenty Thirteen 1.0
+ * @subpackage CIoS-Dev
+ * @since CIoS-Dev 1.0
  */
 require('../../../wp-blog-header.php');
 get_header(); 
@@ -41,7 +41,7 @@ if (!$current_user->ID) {
 			<?php
 
                         $url = "https://crm.zoho.com/crm/private/xml/Contacts/getSearchRecordsByPDC";
-                        $param = "authtoken=".$token."&scope=crmapi&selectColumns=Contacts(First Name,Last Name,Email,County/Location,Mobile,Phone)&searchColumn=contactid&searchValue=".$tmp['crmcontact']."&version=2";
+                        $param = "authtoken=".$token."&scope=crmapi&selectColumns=Contacts(First Name,Last Name,Email,Mobile,Phone)&searchColumn=contactid&searchValue=".$tmp['crmcontact']."&version=2";
                         $result = processRequest($url, $param);
                         $xml = simplexml_load_string($result, null, LIBXML_NOCDATA);
 
@@ -68,13 +68,13 @@ if (!$current_user->ID) {
                                     <label for="<?php print $value; ?>"><?php print $value; ?></label>
                                   </div>
                                   <div style="float:left;">
-                                    <input size="50" type="text" name="<?php print str_replace(" ","_",$value); ?>" value="<?php print stripslashes((string)$FL); ?>" />
+                                    <input size="50" type="text" name="<?php print strtolower(str_replace(" ","_",$value)); ?>" value="<?php print stripslashes((string)$FL); ?>" />
                                   </div>
                               <?php } ?>
 
 
                                <?php if ($value == "CONTACTID" || $value == "ACCOUNTID") {
-                                        print '<input type="hidden" name='.$value.' value='.(string)$FL.' />';
+                                        print '<input type="hidden" name="'.strtolower($value).'" value="'.(string)$FL.'" />';
                                      }
                               ?>
                          </div>

@@ -15,7 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       Contact Administration
  * Plugin URI:        http://www.ciosgrowthhub.com/wp-content/plugins/contact-administration
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       Provides functionality to allow logged in users to perform data housekeeping duties
  * Version:           1.0.0
  * Author:            Growth Hub
  * Author URI:        http://www.ciosgrowthhub.com

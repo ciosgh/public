@@ -3,8 +3,8 @@
  * Template Name: Edit Contact Record
  *
  * @package WordPress
- * @subpackage Twenty_Thirteen
- * @since Twenty Thirteen 1.0
+ * @subpackage CIoS-Dev
+ * @since CIoS-Dev 1.0
  */
 require('../../../wp-blog-header.php');
 get_header(); 
@@ -66,7 +66,7 @@ if (!$current_user->ID) {
                                     <label for="<?php print $value; ?>"><?php print $value; ?></label>
                                   </div>
                                   <div style="float:left;">
-                                    <input size="50" type="text" name="<?php print str_replace(" ","_",$value); ?>" value="<?php print stripslashes((string)$FL); ?>" />
+                                    <input size="50" type="text" name="<?php print strtolower(str_replace(" ","_",$value)); ?>" value="<?php print stripslashes((string)$FL); ?>" />
                                   </div>
                               <?php } ?>
                                 
@@ -76,11 +76,11 @@ if (!$current_user->ID) {
                                             <label for="<?php print $value; ?>"><?php print $value; ?></label>
                                         </div>
                                 
-                                  <?php print '<textarea cols="60" rows="7" name='.$value.'>'.(string)$FL.'</textarea>';
+                                  <?php print '<textarea cols="60" rows="7" name='.strtolower($value).'>'.(string)$FL.'</textarea>';
                                      }
 
                                     if ($value == "ACCOUNTID") {
-                                        print '<input type="hidden" name='.$value.' value='.(string)$FL.' />';
+                                        print '<input type="hidden" name="'.strtolower($value).'" value='.(string)$FL.' />';
                                      }
                               ?>
                          </div>
